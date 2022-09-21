@@ -1,5 +1,5 @@
 function getRandomNumber(start, end){
-    if(start === end) {
+    if(start === end){
         return start;
     }
     if(start > end) {
@@ -9,9 +9,8 @@ function getRandomNumber(start, end){
     end = Math.floor(end);
     return Math.floor(Math.random() * (end - start)) + start;
 }
-
 function isLineMatch(str, maxLength){
-    if (str.length <= maxLength) {
+    if(str.length <= maxLength){
         return true;
     }
     return false;
