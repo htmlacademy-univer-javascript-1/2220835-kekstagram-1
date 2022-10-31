@@ -40,7 +40,7 @@ function getRandomNumber(start, end)
   return Math.floor(Math.random() * (end - start)) + start;
 }
 
-let idComment = 0
+let idComment = 0;
 const getComment = () => ({
   id: idComment ++,
   avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
@@ -58,4 +58,5 @@ const getPostingPhoto = () => ({
 });
 
 const arrayPostingPhoto = Array.from({length: 25}, getPostingPhoto);
+arrayPostingPhoto();
 checkMaxLength(' ', 5);
