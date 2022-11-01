@@ -1,3 +1,3 @@
 import './util.js';
-import {getPostingPhoto} from './data.js';
-
+import {arrayPostingPhoto} from './data.js';
+arrayPostingPhoto();
