@@ -45,6 +45,6 @@ const getPostingPhoto = () => ({
   comments: Array.from({length: 3}, getComment)
 });
 
-const arrayPostingPhoto = Array.from({length: 25}, getPostingPhoto);
+const createPostingPhoto = Array.from({length: 25}, getPostingPhoto);
 
-export {arrayPostingPhoto};
+export {createPostingPhoto};
