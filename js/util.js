@@ -9,4 +9,6 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const checkStringLength = (string, length) => string.length <= length;
 
-export {getRandomPositiveInteger, getRandomArrayElement, checkStringLength};
+const isEscapeKey = (event) => event.key === 'Escape';
+
+export {getRandomPositiveInteger, getRandomArrayElement, checkStringLength, isEscapeKey};
