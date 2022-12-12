@@ -3,7 +3,6 @@ import {miniaturesClickHandler} from './big-pictures.js';
 
 const imageTemplate = document.querySelector('#picture').content;
 const documentFragment = document.createDocumentFragment();
-
 const pictures = document.querySelector('.pictures');
 
 const createMiniatures = (data) => {
