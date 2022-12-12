@@ -1,3 +1,5 @@
 import './util.js';
-import {arrayPostingPhoto} from './data.js';
-arrayPostingPhoto();
+import {createPostingPhoto} from './data.js';
+import {createMiniatures} from './miniatures';
+
+createMiniatures(createPostingPhoto());
