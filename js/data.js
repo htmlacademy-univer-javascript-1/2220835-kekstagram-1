@@ -28,6 +28,8 @@ const NAMES = [
   'Валерий'
 ];
 
+const PHOTO_COUNT = 25;
+
 let idComment = 0;
 const getComment = () => ({
   id: idComment ++,
@@ -42,9 +44,9 @@ const getPostingPhoto = () => ({
   url: `photos/${this.id}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   lekes: getRandomPositiveInteger(15, 200),
-  comments: Array.from({length: 3}, getComment)
+  comments: Array.from({length: getRandomPositiveInteger(1, 12)}, getComment)
 });
 
-const createPostingPhoto = Array.from({length: 25}, getPostingPhoto);
+const createPostingPhoto = () => Array.from({length: PHOTO_COUNT}, getPostingPhoto);
 
 export {createPostingPhoto};
