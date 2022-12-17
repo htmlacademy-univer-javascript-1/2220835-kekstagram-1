@@ -1,6 +1,16 @@
 import './util.js';
-import {createPostingPhoto} from './data.js';
 import {createMiniatures} from './miniatures';
-import './form.js';
+import {setUserFormSubmit, closeUploadFileForm} from './form.js';
+import {getData} from './api.js';
+import './big-pictures.js';
+import {showError, showSuccess} from './listener';
 
-createMiniatures(createPostingPhoto());
+getData(createMiniatures);
+
+setUserFormSubmit(() => {
+  closeUploadFileForm();
+  showSuccess();
+}, () => {
+  closeUploadFileForm(null, false);
+  showError();
+});

@@ -90,4 +90,4 @@ const miniaturesClickHandler = (data) => {
   });
 };
 
-export {miniaturesClickHandler};
+export {miniaturesClickHandler, closeModal};
