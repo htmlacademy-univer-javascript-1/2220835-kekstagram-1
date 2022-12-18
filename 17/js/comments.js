@@ -8,7 +8,7 @@ const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const socialComments = bigPicture.querySelector('.social__comments');
 const commentChild = socialComments.children[0];
 
-let maxCommentsMultiplyer = 1;
+let countCommentGroup = 1;
 
 const getCommentItem = (comment) => {
   const newComment = commentChild.cloneNode(true);
@@ -24,10 +24,10 @@ const getCommentItem = (comment) => {
   return newComment;
 };
 
-const addNewComments = () => {
-  const newCommentsCount = MAX_NEW_COMMENTS_COUNT * maxCommentsMultiplyer;
-  const commentsOverallCount = socialComments.children.length;
-  const addedCommentsCount = newCommentsCount >= commentsOverallCount ? commentsOverallCount : newCommentsCount;
+const addCommentGroup = () => {
+  const newCommentsCount = MAX_NEW_COMMENTS_COUNT * countCommentGroup;
+  const currentCommentCount = socialComments.children.length;
+  const addedCommentsCount = newCommentsCount > currentCommentCount ? currentCommentCount : newCommentsCount;
 
   for(let i = 0; i < addedCommentsCount; i++) {
     if (i < newCommentsCount && i >= newCommentsCount - MAX_NEW_COMMENTS_COUNT) {
@@ -35,15 +35,15 @@ const addNewComments = () => {
     }
   }
 
-  if(commentsOverallCount > newCommentsCount) {
+  if(currentCommentCount > newCommentsCount) {
     commentsLoader.classList.remove('hidden');
   }
   else{
     commentsLoader.classList.add('hidden');
   }
 
-  socialCommentCount.innerHTML = `${addedCommentsCount} из <span class="comments-count">${commentsOverallCount}</span>
-  ${commentForm(commentsOverallCount, 'комментарий', 'комментария', 'комментариев')}`;
+  socialCommentCount.innerHTML = `${addedCommentsCount} из <span class="comments-count">${currentCommentCount}</span>
+  ${commentForm(currentCommentCount, 'комментарий', 'комментария', 'комментариев')}`;
 };
 
 const setComments = (comments) => {
@@ -51,12 +51,12 @@ const setComments = (comments) => {
   comments.forEach((comment) => {
     socialComments.appendChild(getCommentItem(comment));
   });
-  maxCommentsMultiplyer = 1;
-  addNewComments();
+  countCommentGroup = 1;
+  addCommentGroup();
 };
 
 commentsLoader.addEventListener('click', () => {
-  addNewComments(maxCommentsMultiplyer++);
+  addCommentGroup(countCommentGroup++);
 });
 
 export { setComments, bigPicture };

@@ -2,7 +2,7 @@ import { debounce, shuffleArray } from './util.js';
 import { createMiniatures, clearPhotos } from './miniatures.js';
 import { pictures } from './data.js';
 
-const MAX_FILTER_LENGTH = 10;
+const MAX_LENGTH = 10;
 
 const imgFilterForm = document.querySelector('.img-filters__form');
 
@@ -10,12 +10,10 @@ const showFilters = () => {
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 };
 
-const sortByCommentsCount = (firstItem, secondItem) => secondItem.comments.length - firstItem.comments.length;
-
 const filters = {
   'filter-default': () => pictures.slice(),
-  'filter-random': () => shuffleArray(pictures.slice()).slice(0, MAX_FILTER_LENGTH),
-  'filter-discussed': () => pictures.slice().sort(sortByCommentsCount),
+  'filter-random': () => shuffleArray(pictures.slice()).slice(0, MAX_LENGTH),
+  'filter-discussed': () => pictures.slice().sort((a, b) => b.comments.length - a.comments.length),
 };
 
 const onFilterClick = debounce((evt) => {
