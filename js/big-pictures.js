@@ -1,4 +1,4 @@
-import { isEscape } from './util.js';
+import {isEscapeKey } from './util.js';
 import { setComments, bigPicture } from './comments.js';
 
 const closeButton = bigPicture.querySelector('#picture-cancel');
@@ -9,7 +9,7 @@ const clearBigPictureMenu = () => {
 };
 
 const onEscapeKeyDown = (evt) => {
-  if(isEscape(evt)){
+  if(isEscapeKey(evt)){
     clearBigPictureMenu();
     document.removeEventListener('keydown', onEscapeKeyDown);
   }

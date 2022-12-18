@@ -1,5 +1,5 @@
-import { debounce, shuffle } from './util.js';
-import { renderPhotos, removePhotos } from './miniatures.js';
+import { debounce, shuffleArray } from './util.js';
+import { createMiniatures, clearPhotos } from './miniatures.js';
 import { pictures } from './data.js';
 
 const MAX_FILTER_LENGTH = 10;
@@ -14,7 +14,7 @@ const sortByCommentsCount = (firstItem, secondItem) => secondItem.comments.lengt
 
 const filters = {
   'filter-default': () => pictures.slice(),
-  'filter-random': () => shuffle(pictures.slice()).slice(0, MAX_FILTER_LENGTH),
+  'filter-random': () => shuffleArray(pictures.slice()).slice(0, MAX_FILTER_LENGTH),
   'filter-discussed': () => pictures.slice().sort(sortByCommentsCount),
 };
 
@@ -27,8 +27,8 @@ const onFilterClick = debounce((evt) => {
     }
     evt.target.classList.add('img-filters__button--active');
 
-    removePhotos();
-    renderPhotos(filters[evt.target.id]());
+    clearPhotos();
+    createMiniatures(filters[evt.target.id]());
   }
 });
 

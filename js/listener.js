@@ -1,5 +1,5 @@
 import { closeForm, onEscapeKeyDown } from './form.js';
-import { isEscape } from './util.js';
+import { isEscapeKey } from './util.js';
 
 const MESSAGE_Z_POSITION = 100;
 
@@ -27,7 +27,7 @@ const closeErrorMessage = () => {
 };
 
 const onErrorEscapeDown = (evt) => {
-  if(isEscape(evt)) {
+  if(isEscapeKey(evt)) {
     document.removeEventListener('keydown', onErrorEscapeDown);
 
     closeErrorMessage();
