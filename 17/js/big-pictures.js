@@ -31,14 +31,4 @@ const openModal = (image) => {
   document.body.classList.add('modal-open');
 };
 
-//const miniaturesClickHandler = (data) => {
-//  pictures.addEventListener('click', (e) => {
-//    const picture = e.target.closest('.picture');
-//
-//    if (picture) {
-//      openModal(data[picture.dataset.index]);
-//    }
-//  });
-//};
-
 export {openModal};
