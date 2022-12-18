@@ -1,5 +1,5 @@
 import { createMiniatures } from './miniatures.js';
-import {showFilters} from './filters.js';
+import {showFilters} from './filter.js';
 
 const ERROR_Z_POSITION = 100;
 const ERROR_FONT_SIZE = 20;
