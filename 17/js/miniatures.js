@@ -1,6 +1,6 @@
 import {openModal} from './big-pictures.js';
 
-const imageTemplate = document.querySelector('#picture').content;
+const imageTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const documentFragment = document.createDocumentFragment();
 const pictures = document.querySelector('.pictures');
 
