@@ -1,35 +1,31 @@
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+const TIMEOUT_DELA = 500;
+const MIN_PLURAL_DIGIT = 5;
+const MIN_DECIMAL_NUMBER = 10;
+const MAX_DECIMAL_NUMBER = 19;
+const MIN_HUNDREDTH_NUMBER = 100;
 
 const isEscapeKey = (event) => event.key === 'Escape';
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
 
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELA);
   };
 };
 
-const throttle = (callback, delayBetweenFrames) => {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
+const declineByNumber = (number, nominative, genitiveSingular, genitivePlural) => {
+  const lastDigit = number % MIN_DECIMAL_NUMBER;
+  if (lastDigit === 0 || lastDigit >= MIN_PLURAL_DIGIT && lastDigit < MIN_DECIMAL_NUMBER
+      || number % MIN_HUNDREDTH_NUMBER > MIN_DECIMAL_NUMBER && number % MIN_HUNDREDTH_NUMBER <= MAX_DECIMAL_NUMBER) {
+    return genitivePlural;
+  }
+  else if (lastDigit > 1 && lastDigit < MIN_PLURAL_DIGIT) {
+    return genitiveSingular;
+  }
+  return nominative;
 };
 
 const shuffleArray = (array) => {
@@ -47,4 +43,4 @@ const shuffleArray = (array) => {
 };
 
 
-export {getRandomPositiveInteger, getRandomArrayElement, isEscapeKey, debounce, throttle, shuffleArray};
+export {isEscapeKey, debounce, shuffleArray, declineByNumber};

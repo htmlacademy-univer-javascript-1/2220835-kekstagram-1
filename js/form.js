@@ -1,119 +1,70 @@
 import {isEscapeKey} from './util.js';
-import {checkIfHashtagsRepeated, checkMaxHashtagsCount, checkIfHashtagCorrect, MAX_TAGS_COUNT} from './validators.js';
-import {sliderScaleChange} from './slider.js';
-import {imageScale} from './scale-change.js';
-import {sendData} from './api.js';
+import { uploadHashtagInput, clearHashtagsField, checkFormValidation, form } from './validators.js';
+import { scalingPhotos, uploadingOverlay } from './scale-change';
+import { setEffects } from './effects.js';
+import { setData } from './api.js';
+import { addPostMessages, showSuccessMessage, closeMessage, showErrorMessage } from './listener.js';
+import { uploadUserPhoto} from './user-photo-upload.js';
 
-const imgUploadForm = document.querySelector('.img-upload__form');
 const uploadFile = document.querySelector('#upload-file');
-const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancel = document.querySelector('#upload-cancel');
-const textHashtags = document.querySelector('.text__hashtags');
+const uploadSubmit = uploadingOverlay.querySelector('#upload-submit');
 const textDescription = document.querySelector('.text__description');
 
-const pristine = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__error-text'
-});
+const clearForm = () => {
+  uploadingOverlay.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  uploadFile.value = '';
 
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imgPreview = document.querySelector('.img-upload__preview img');
-const effectsList = document.querySelector('.effects__list');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const imgUploadSubmit = document.querySelector('.img-upload__submit');
+  clearHashtagsField();
+  textDescription.value = '';
 
-const sliderScaleImageSettings = sliderScaleChange('none', effectLevelSlider, effectLevelValue);
-const scaleUploadImage = imageScale(scaleControlValue, imgPreview);
+  closeMessage();
 
-pristine.addValidator(textHashtags, checkIfHashtagsRepeated, 'Хештеги регистронезависимы и не должны повторяться');
-pristine.addValidator(textHashtags, checkMaxHashtagsCount, `Максимальное число хештегов - ${MAX_TAGS_COUNT}`);
-pristine.addValidator(textHashtags, checkIfHashtagCorrect, 'Один из хештегов некорректен');
-
-const applyChanges = (value) => {
-  imgPreview.classList.remove(`effects__preview--${sliderScaleImageSettings.getCurrentFilter()}`);
-  sliderScaleImageSettings.setCurrentFilter(value);
-  imgPreview.classList.add(`effects__preview--${sliderScaleImageSettings.getCurrentFilter()}`);
-  effectLevelSlider.noUiSlider.updateOptions(sliderScaleImageSettings.getOptions());
-  imgPreview.style.filter = sliderScaleImageSettings.getStyles();
+  uploadSubmit.disabled = false;
 };
 
-const closeUploadFileForm = (e = null, clear = true) => {
-  if (e === null || (isEscapeKey(e) && document.activeElement !== textHashtags && document.activeElement !== textDescription) || e.type === 'click') {
-    imgUploadOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    document.removeEventListener('keydown', closeUploadFileForm);
-    uploadCancel.removeEventListener('click', closeUploadFileForm);
-
-    if (clear) {
-      imgUploadForm.reset();
-      scaleUploadImage.init();
-      applyChanges('none');
-    }
+const onEscapeKeyDown = (evt) => {
+  if(isEscapeKey(evt) && !evt.target.classList.contains('text__hashtags') && !evt.target.classList.contains('text__description')) {
+    clearForm();
+    document.removeEventListener('keydown', onEscapeKeyDown);
   }
 };
 
-uploadFile.addEventListener('change', () => {
-  imgUploadOverlay.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', closeUploadFileForm);
-  uploadCancel.addEventListener('click', closeUploadFileForm);
-});
+const closeForm = () => {
+  clearForm();
 
-const blockSubmitButton = () => {
-  imgUploadSubmit.disabled = true;
-  imgUploadSubmit.textContent = 'Публикация...';
+  document.removeEventListener('keydown', onEscapeKeyDown);
 };
 
-const unblockSubmitButton = () => {
-  imgUploadSubmit.disabled = false;
-  imgUploadSubmit.textContent = 'Опубликовать';
+uploadCancel.addEventListener('click', closeForm);
+
+const onUploadClick = () => {
+  document.addEventListener('keydown', onEscapeKeyDown);
+
+  uploadUserPhoto(uploadFile.files[0]);
+
+  uploadingOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+
+  scalingPhotos();
+  setEffects();
+  uploadHashtagInput();
 };
 
-const setUserFormSubmit = (onSuccess, onError) => {
-  imgUploadForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          onSuccess();
-          unblockSubmitButton();
-
-        },
-        () => {
-          onError();
-          unblockSubmitButton();
-        },
-        new FormData(imgUploadForm)
-      );
-    }
-  });
+const uploadForm = () => {
+  uploadFile.addEventListener('change', onUploadClick);
+  addPostMessages();
 };
 
-scaleControlSmaller.addEventListener('click', scaleUploadImage.decreaseValue);
-scaleControlBigger.addEventListener('click', scaleUploadImage.increaseValue);
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
 
-noUiSlider.create(effectLevelSlider, sliderScaleImageSettings.getOptions());
-
-effectLevelSlider.noUiSlider.on('update', () => {
-  effectLevelValue.value = effectLevelSlider.noUiSlider.get();
-  imgPreview.style.filter = sliderScaleImageSettings.getStyles();
-});
-
-effectsList.addEventListener('click', (e) => {
-  const effectsItems = e.target.closest('.effects__item');
-  if (effectsItems) {
-    const value = effectsItems.querySelector('.effects__radio').value;
-    applyChanges(value);
+  if(checkFormValidation()) {
+    setData(showSuccessMessage, showErrorMessage, 'POST', new FormData(form));
   }
-});
-
-export {
-  setUserFormSubmit,
-  closeUploadFileForm
 };
+
+form.addEventListener('submit', onFormSubmit);
+
+export{uploadForm, closeForm, onEscapeKeyDown};
