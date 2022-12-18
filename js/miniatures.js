@@ -1,21 +1,38 @@
-import {miniaturesClickHandler} from './big-pictures.js';
+import { openModal } from './big-pictures.js';
 
-
-const imageTemplate = document.querySelector('#picture').content;
-const documentFragment = document.createDocumentFragment();
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
+const documentFragment = document.createDocumentFragment();
 
-const createMiniatures = (data) => {
-  data.forEach((image, index) => {
-    const picture = imageTemplate.cloneNode(true);
-    picture.querySelector('.picture__img').src = image.url;
-    picture.querySelector('.picture__likes').textContent = image.likes;
-    picture.querySelector('.picture__comments').textContent = image.comments.length;
-    picture.querySelector('.picture').dataset.index = index;
-    documentFragment.append(picture);
+const clearPhotos = () => {
+  const oldPictures = pictures.querySelectorAll('.picture');
+  oldPictures.forEach((picture) => {
+    picture.remove();
   });
-  pictures.append(documentFragment);
-  miniaturesClickHandler(data);
 };
 
-export {createMiniatures};
+const createMiniature = (picture) => {
+  const newImage = pictureTemplate.cloneNode(true);
+
+  newImage.querySelector('.picture__img').src = picture.url;
+  newImage.querySelector('.picture__comments').textContent = picture.comments.length;
+  newImage.querySelector('.picture__likes').textContent = picture.likes;
+
+  newImage.addEventListener('click', (evt) => {
+    evt.preventDefault();
+
+    openModal(picture);
+  });
+
+  return newImage;
+};
+
+const createMiniatures = (data) => {
+  data.forEach((picture) => {
+    documentFragment.appendChild(createMiniature(picture));
+  });
+
+  pictures.appendChild(documentFragment);
+};
+
+export {createMiniatures, clearPhotos};

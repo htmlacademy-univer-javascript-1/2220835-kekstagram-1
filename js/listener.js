@@ -1,59 +1,72 @@
-import {isEscapeKey} from './util.js';
+import { closeForm, onEscapeKeyDown } from './form.js';
+import { isEscapeKey } from './util.js';
 
-const successTemplate = document.querySelector('#success').content;
-const errorTemplate = document.querySelector('#error').content;
+const MESSAGE_Z_POSITION = 100;
 
-const showSuccess = () => {
-  const success = successTemplate.cloneNode(true);
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successMessage = successTemplate.cloneNode(true);
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorMessage = errorTemplate.cloneNode(true);
 
-  const closeModal = (e) => {
-    if (isEscapeKey(e)) {
-      document.removeEventListener('click', closeModal);
-      document.removeEventListener('keydown', closeModal);
-      document.querySelector('.success').remove();
-    } else if (e.type === 'click') {
-      const successInner = e.target.closest('.success__inner');
-      const successButton = e.target.closest('.success__button');
+const checkElementTarget = (evt, button, inner) => evt.target.classList.contains(button) || !evt.target.classList.contains(inner);
 
-      if ((successInner && successButton) || (!successInner && !successButton)) {
-        document.removeEventListener('click', closeModal);
-        document.removeEventListener('keydown', closeModal);
-        document.querySelector('.success').remove();
-      }
-    }
-  };
-
-  document.addEventListener('click', closeModal);
-  document.addEventListener('keydown', closeModal);
-  document.body.append(success);
+const closeMessage = (message = successMessage) => {
+  message.classList.add('hidden');
 };
 
-const showError = () => {
-  const error = errorTemplate.cloneNode(true);
-
-  const closeModal = (e) => {
-    if (isEscapeKey(e)) {
-      document.removeEventListener('click', closeModal);
-      document.removeEventListener('keydown', closeModal);
-      document.querySelector('.error').remove();
-    } else if (e.type === 'click') {
-      const errorInner = e.target.closest('.error__inner');
-      const errorButton = e.target.closest('.error__button');
-
-      if ((errorInner && errorButton) || (!errorInner && !errorButton)) {
-        document.removeEventListener('click', closeModal);
-        document.removeEventListener('keydown', closeModal);
-        document.querySelector('.error').remove();
-      }
-    }
-  };
-
-  document.addEventListener('click', closeModal);
-  document.addEventListener('keydown', closeModal);
-  document.body.append(error);
+const onSuccessClick = (evt) => {
+  if (checkElementTarget(evt, 'success__button', 'success__inner')) {
+    closeForm();
+  }
 };
 
-export {
-  showSuccess,
-  showError
+const closeErrorMessage = () => {
+  closeMessage(errorMessage);
+
+  document.addEventListener('keydown', onEscapeKeyDown);
 };
+
+const onErrorEscapeDown = (evt) => {
+  if(isEscapeKey(evt)) {
+    document.removeEventListener('keydown', onErrorEscapeDown);
+
+    closeErrorMessage();
+  }
+};
+
+const onErrorClick = (evt) => {
+  if(checkElementTarget(evt, 'error__button', 'error__inner')) {
+    document.removeEventListener('keydown', onErrorEscapeDown);
+
+    closeErrorMessage();
+  }
+};
+
+const appendMessage = (message) => {
+  message.classList.add('hidden');
+  message.style.zIndex = MESSAGE_Z_POSITION;
+
+  document.body.appendChild(message);
+};
+
+const addPostMessages = () => {
+  appendMessage(successMessage);
+  appendMessage(errorMessage);
+};
+
+const showSuccessMessage = () => {
+  successMessage.classList.remove('hidden');
+
+  successMessage.addEventListener('click', onSuccessClick, {once: true});
+};
+
+const showErrorMessage = () => {
+  document.removeEventListener('keydown', onEscapeKeyDown);
+  document.addEventListener('keydown', onErrorEscapeDown);
+
+  errorMessage.classList.remove('hidden');
+
+  errorMessage.addEventListener('click', onErrorClick, {once: true});
+};
+
+export{addPostMessages, showSuccessMessage, closeMessage, showErrorMessage};

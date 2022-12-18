@@ -1,16 +1,11 @@
-import './util.js';
-import {createMiniatures} from './miniatures';
-import {setUserFormSubmit, closeUploadFileForm} from './form.js';
-import {getData} from './api.js';
-import './big-pictures.js';
-import {showError, showSuccess} from './listener';
+import {uploadForm} from './form.js';
+import {setData} from './api.js';
+import {onRecieveSuccess, showUnloadingErrorMessage} from './data.js';
 
-getData(createMiniatures);
+setData(onRecieveSuccess,
+  () => {
+    showUnloadingErrorMessage('Не удалось загрузить данные. Попробуйте ещё раз');
+  },
+  'GET');
 
-setUserFormSubmit(() => {
-  closeUploadFileForm();
-  showSuccess();
-}, () => {
-  closeUploadFileForm(null, false);
-  showError();
-});
+uploadForm();
