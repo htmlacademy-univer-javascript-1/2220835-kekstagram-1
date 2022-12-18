@@ -1,6 +1,6 @@
 import {setData} from './api.js';
-import {uploadForm} from './formUpload.js';
-import {onRecieveSuccess, showUnloadingErrorMessage} from './dataUpload.js';
+import {uploadForm} from './form.js';
+import {onRecieveSuccess, showUnloadingErrorMessage} from './data.js';
 
 setData(onRecieveSuccess,
   () => {
