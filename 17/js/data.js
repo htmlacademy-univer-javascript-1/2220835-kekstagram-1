@@ -1,4 +1,4 @@
-import { renderPhotos } from './miniatures.js';
+import { createMiniatures } from './miniatures.js';
 import {showFilters} from './filter.js';
 
 const POSITION = 100;
@@ -10,7 +10,7 @@ let pictures = [];
 
 const onRecieveSuccess = (data) => {
   pictures = data.slice();
-  renderPhotos(data);
+  createMiniatures(data);
   showFilters();
 };
 

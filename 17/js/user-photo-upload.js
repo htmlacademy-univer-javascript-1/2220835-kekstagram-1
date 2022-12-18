@@ -1,9 +1,9 @@
-import { form } from './validators.js';
+import { imgUploadForm } from './validators.js';
 
 const PICTURE_EXTENSION = ['png', 'jpeg', 'jpg', 'gif'];
 
-const picturePreview = form.querySelector('.img-upload__preview').querySelector('img');
-const effectsPreviews = form.querySelectorAll('.effects__preview');
+const picturePreview = imgUploadForm.querySelector('.img-upload__preview').querySelector('img');
+const effectsPreviews = imgUploadForm.querySelectorAll('.effects__preview');
 
 const uploadUserPicture = (pictureFile) => {
   const matches = PICTURE_EXTENSION.some((extension) => pictureFile.name.toLowerCase().endsWith(extension));

@@ -1,10 +1,10 @@
-const DEBOUNCE_DELAY = 500;
+const TIME_DELAY = 500;
 const MIN_PLURAL_DIGIT = 5;
 const MIN_DECIMAL_NUMBER = 10;
 const MAX_DECIMAL_NUMBER = 19;
 const MIN_HUNDREDTH_NUMBER = 100;
 
-const isEscape = (evt) => evt.key === 'Escape';
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const debounce = (callback) => {
   let timeoutId;
@@ -12,20 +12,25 @@ const debounce = (callback) => {
   return (...rest) => {
     clearTimeout(timeoutId);
 
-    timeoutId = setTimeout(() => callback.apply(this, rest), DEBOUNCE_DELAY);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIME_DELAY);
   };
 };
 
-const shuffle = (array) => {
-  for(let firstIndex = array.length - 1; firstIndex > 0; firstIndex--) {
-    const randomIndex = Math.floor(Math.random() * (firstIndex + 1));
-    [array[firstIndex], array[randomIndex]] = [array[randomIndex], array[firstIndex]];
+const shuffleArray = (array) => {
+  let currentIndex = array.length;
+  let randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
 
   return array;
 };
 
-const declineByNumber = (number, nominative, genitiveSingular, genitivePlural) => {
+const commentForm = (number, nominative, genitiveSingular, genitivePlural) => {
   const lastDigit = number % MIN_DECIMAL_NUMBER;
   if (lastDigit === 0 || lastDigit >= MIN_PLURAL_DIGIT && lastDigit < MIN_DECIMAL_NUMBER
       || number % MIN_HUNDREDTH_NUMBER > MIN_DECIMAL_NUMBER && number % MIN_HUNDREDTH_NUMBER <= MAX_DECIMAL_NUMBER) {
@@ -37,4 +42,4 @@ const declineByNumber = (number, nominative, genitiveSingular, genitivePlural) =
   return nominative;
 };
 
-export {isEscape, debounce, shuffle, declineByNumber};
+export {isEscapeKey, debounce, shuffleArray, commentForm};

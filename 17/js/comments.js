@@ -1,4 +1,4 @@
-import { declineByNumber } from './util.js';
+import {commentForm} from './util.js';
 
 const MAX_NEW_COMMENTS_COUNT = 5;
 
@@ -43,7 +43,7 @@ const addNewComments = () => {
   }
 
   socialCommentCount.innerHTML = `${addedCommentsCount} из <span class="comments-count">${commentsOverallCount}</span>
-  ${declineByNumber(commentsOverallCount, 'комментарий', 'комментария', 'комментариев')}`;
+  ${commentForm(commentsOverallCount, 'комментарий', 'комментария', 'комментариев')}`;
 };
 
 const setComments = (comments) => {
