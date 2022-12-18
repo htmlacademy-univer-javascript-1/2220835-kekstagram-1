@@ -1,20 +1,20 @@
-import { form } from './validators';
+import { form } from './validators.js';
 
 const PICTURE_EXTENSION = ['png', 'jpeg', 'jpg', 'gif'];
 
-const uploadPreview = form.querySelector('.img-upload__preview').querySelector('img');
-const effectsPreview = form.querySelectorAll('.effects__preview');
+const picturePreview = form.querySelector('.img-upload__preview').querySelector('img');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 
-const uploadUserPhoto = (pictureFile) => {
+const uploadUserPicture = (pictureFile) => {
   const matches = PICTURE_EXTENSION.some((extension) => pictureFile.name.toLowerCase().endsWith(extension));
 
   if (matches) {
     const pictureUrl = URL.createObjectURL(pictureFile);
-    uploadPreview.src = pictureUrl;
-    effectsPreview.forEach((effect) => {
+    picturePreview.src = pictureUrl;
+    effectsPreviews.forEach((effect) => {
       effect.style.backgroundImage = `url(${pictureUrl})`;
     });
   }
 };
 
-export{uploadUserPhoto};
+export{uploadUserPicture};

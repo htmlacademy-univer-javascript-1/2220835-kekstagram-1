@@ -1,28 +1,28 @@
-import { createMiniatures } from './miniatures.js';
+import { renderPhotos } from './miniatures.js';
 import {showFilters} from './filter.js';
 
-const ERROR_Z_POSITION = 100;
-const ERROR_FONT_SIZE = 20;
-const ERROR_VERTICAL_PADDING = 10;
-const ERROR_HORIZONTAL_PADDING = 50;
+const POSITION = 100;
+const SIZE_ERROR = 20;
+const VERTICAL_PADDING = 10;
+const HORIZONTAL_PADDING = 50;
 
 let pictures = [];
 
 const onRecieveSuccess = (data) => {
   pictures = data.slice();
-  createMiniatures(data);
+  renderPhotos(data);
   showFilters();
 };
 
-const giveErrorMessage = (errorText) => {
+const showUnloadingErrorMessage = (errorText) => {
   const errorMessage = document.createElement('div');
 
-  errorMessage.style.zIndex = ERROR_Z_POSITION;
+  errorMessage.style.zIndex = POSITION;
   errorMessage.style.color = 'white';
-  errorMessage.style.backgroundColor = '#CF8555';
-  errorMessage.style.fontSize = `${ERROR_FONT_SIZE}px`;
+  errorMessage.style.backgroundColor = '#9C281B';
+  errorMessage.style.fontSize = `${SIZE_ERROR}px`;
   errorMessage.style.textAlign = 'center';
-  errorMessage.style.padding = `${ERROR_VERTICAL_PADDING}px ${ERROR_HORIZONTAL_PADDING}px`;
+  errorMessage.style.padding = `${VERTICAL_PADDING}px ${HORIZONTAL_PADDING}px`;
   errorMessage.style.position = 'absolute';
   errorMessage.style.left = 0;
   errorMessage.style.right = 0;
@@ -33,4 +33,4 @@ const giveErrorMessage = (errorText) => {
   document.body.append(errorMessage);
 };
 
-export{onRecieveSuccess, giveErrorMessage, pictures};
+export{onRecieveSuccess, showUnloadingErrorMessage, pictures};

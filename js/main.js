@@ -1,10 +1,10 @@
-import {setData} from './api.js';
 import {uploadForm} from './form.js';
-import {onRecieveSuccess, giveErrorMessage} from './data.js';
+import {setData} from './api.js';
+import {onRecieveSuccess, showUnloadingErrorMessage} from './data.js';
 
 setData(onRecieveSuccess,
   () => {
-    giveErrorMessage('Не удалось загрузить данные');
+    showUnloadingErrorMessage('Не удалось загрузить данные из сервера :(');
   },
   'GET');
 

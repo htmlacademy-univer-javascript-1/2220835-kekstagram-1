@@ -1,10 +1,10 @@
-const TIMEOUT_DELA = 500;
+const DEBOUNCE_DELAY = 500;
 const MIN_PLURAL_DIGIT = 5;
 const MIN_DECIMAL_NUMBER = 10;
 const MAX_DECIMAL_NUMBER = 19;
 const MIN_HUNDREDTH_NUMBER = 100;
 
-const isEscapeKey = (event) => event.key === 'Escape';
+const isEscape = (evt) => evt.key === 'Escape';
 
 const debounce = (callback) => {
   let timeoutId;
@@ -12,8 +12,17 @@ const debounce = (callback) => {
   return (...rest) => {
     clearTimeout(timeoutId);
 
-    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELA);
+    timeoutId = setTimeout(() => callback.apply(this, rest), DEBOUNCE_DELAY);
   };
+};
+
+const shuffle = (array) => {
+  for(let firstIndex = array.length - 1; firstIndex > 0; firstIndex--) {
+    const randomIndex = Math.floor(Math.random() * (firstIndex + 1));
+    [array[firstIndex], array[randomIndex]] = [array[randomIndex], array[firstIndex]];
+  }
+
+  return array;
 };
 
 const declineByNumber = (number, nominative, genitiveSingular, genitivePlural) => {
@@ -28,19 +37,4 @@ const declineByNumber = (number, nominative, genitiveSingular, genitivePlural) =
   return nominative;
 };
 
-const shuffleArray = (array) => {
-  let currentIndex = array.length;
-  let randomIndex;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-};
-
-
-export {isEscapeKey, debounce, shuffleArray, declineByNumber};
+export {isEscape, debounce, shuffle, declineByNumber};

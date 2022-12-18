@@ -1,31 +1,31 @@
-import {openModal} from './big-pictures';
+import { showBigPictures } from './big-pictures.js';
 
-const imageTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const documentFragment = document.createDocumentFragment();
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
+const picturesFragment = document.createDocumentFragment();
 
-const createMiniature = (picture) => {
-  const newMiniature = imageTemplate.cloneNode(true);
+const renderPicture = (picture) => {
+  const newElement = pictureTemplate.cloneNode(true);
 
-  newMiniature.querySelector('.picture__img').src = picture.url;
-  newMiniature.querySelector('.picture__comments').textContent = picture.comments.length;
-  newMiniature.querySelector('.picture__likes').textContent = picture.likes;
+  newElement.querySelector('.picture__img').src = picture.url;
+  newElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  newElement.querySelector('.picture__likes').textContent = picture.likes;
 
-  newMiniature.addEventListener('click', (evt) => {
+  newElement.addEventListener('click', (evt) => {
     evt.preventDefault();
 
-    openModal(picture);
+    showBigPictures(picture);
   });
 
-  return newMiniature;
+  return newElement;
 };
 
-const createMiniatures = (images) => {
+const renderPhotos = (images) => {
   images.forEach((picture) => {
-    documentFragment.appendChild(createMiniature(picture));
+    picturesFragment.appendChild(renderPicture(picture));
   });
 
-  pictures.appendChild(documentFragment);
+  pictures.appendChild(picturesFragment);
 };
 
 const removePhotos = () => {
@@ -35,4 +35,4 @@ const removePhotos = () => {
   });
 };
 
-export {createMiniatures, removePhotos};
+export {renderPhotos, removePhotos};

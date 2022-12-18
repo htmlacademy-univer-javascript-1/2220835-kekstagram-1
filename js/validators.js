@@ -3,7 +3,6 @@ const MAX_HASHTAGS_LENGTH = 20;
 const form = document.querySelector('.img-upload__form');
 const inputHashtag = form.querySelector('.text__hashtags');
 const submitButton = form.querySelector('#upload-submit');
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__item--invalid',
@@ -29,28 +28,28 @@ const hashtagErrorHandler = (value) => {
 
   const inputRules = [
     {
-      rule: hashtagTexts.some((text) => !/^#[0-9а-яёa-z]{1,19}$/i.test(text)),
-      error: 'Хеш-тег содержит недопустимые символы'
-    },
-    {
       rule: hashtagTexts.some((text) => text.indexOf('#', 1) > 0),
-      error: 'Между хэш-тэгами должны быть пробелы'
+      error: 'Хэш-теги должны разделяться пробелами'
     },
     {
       rule: hashtagTexts.some((text) => text[0] !== '#'),
-      error: 'Каждый хэш-тег должен начинаться с символа # (решётка)'
+      error: 'Хэш-тег должен начинаться с символа # (решётка)'
     },
     {
       rule: hashtagTexts.some((text) => text.length === 1 || text[0] !== '#'),
-      error: 'Хэш-тэг не может быть пустым'
+      error: 'Хеш-тег не может состоять только из одной решётки'
     },
     {
       rule: hashtagTexts.some((text) => text.length > MAX_HASHTAGS_LENGTH),
-      error: `Длина хеш-тега не может быть больше ${MAX_HASHTAGS_LENGTH} символов`
+      error: `Длина хеш-тега превышает ${MAX_HASHTAGS_LENGTH} символов`
     },
     {
       rule: hashtagTexts.some((text, index, array) => array.indexOf(text, index + 1) > index),
-      error: 'Хэш-тэги не должны повторяться'
+      error: 'Один и тот же хэш-тег не может быть использован дважды'
+    },
+    {
+      rule: hashtagTexts.some((text) => !/^#[0-9а-яёa-z]{1,19}$/i.test(text)),
+      error: 'Хеш-тег содержит недопустимые символы'
     },
     {
       rule: hashtagTexts.length > MAX_HASHTAGS_COUNT,
