@@ -1,26 +1,24 @@
-const Scale = {
-  STEP: 25,
-  MAX: 100,
-  MIN: 25,
-};
+const SCALE_STEP = 25;
+const SCALE_MAX = 100;
+const SCALE_MIN = 25;
 
 const uploadingOverlay = document.querySelector('.img-upload__overlay');
-const uploadingPicture = uploadingOverlay.querySelector('.img-upload__preview').querySelector('img');
-const scale = uploadingOverlay.querySelector('.img-upload__scale');
-const scalerField = scale.querySelector('.scale__control--value');
+const imgUploadPreview = uploadingOverlay.querySelector('.img-upload__preview').querySelector('img');
+const imgUploadScale = uploadingOverlay.querySelector('.img-upload__scale');
+const scaleControlValue = imgUploadScale.querySelector('.scale__control--value');
 
 const changeScale = (scaleCoefficient) => {
-  let scaleNumber = Number(scalerField.value.replace('%', '')) + scaleCoefficient * Scale.STEP;
+  let scaleNumber = Number(scaleControlValue.value.replace('%', '')) + scaleCoefficient * SCALE_STEP;
 
-  if(scaleNumber < Scale.MIN) {
-    scaleNumber = Scale.MIN;
+  if(scaleNumber < SCALE_MIN) {
+    scaleNumber = SCALE_MIN;
   }
-  else if (scaleNumber > Scale.MAX) {
-    scaleNumber = Scale.MAX;
+  else if (scaleNumber > SCALE_MAX) {
+    scaleNumber = SCALE_MAX;
   }
 
-  scalerField.value = `${scaleNumber}%`;
-  uploadingPicture.style.transform = `scale(${scaleNumber / 100})`;
+  scaleControlValue.value = `${scaleNumber}%`;
+  imgUploadPreview.style.transform = `scale(${scaleNumber / 100})`;
 };
 
 const onScaleButtonClick = (evt) => {
@@ -34,11 +32,11 @@ const onScaleButtonClick = (evt) => {
   }
 };
 
-const scalingPhotos = () => {
-  scalerField.value = `${Scale.MAX}%`;
-  uploadingPicture.style.transform = `scale(${Scale.MAX / 100})`;
+const scalingImage = () => {
+  scaleControlValue.value = `${SCALE_MAX}%`;
+  imgUploadPreview.style.transform = `scale(${SCALE_MAX / 100})`;
 };
 
-scale.addEventListener('click', onScaleButtonClick);
+imgUploadScale.addEventListener('click', onScaleButtonClick);
 
-export{scalingPhotos, uploadingOverlay};
+export{scalingImage, uploadingOverlay};

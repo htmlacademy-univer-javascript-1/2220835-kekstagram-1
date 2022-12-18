@@ -19,7 +19,7 @@ const showUnloadingErrorMessage = (errorText) => {
 
   errorMessage.style.zIndex = POSITION;
   errorMessage.style.color = 'white';
-  errorMessage.style.backgroundColor = '#9C281B';
+  errorMessage.style.backgroundColor = '#BA6A75';
   errorMessage.style.fontSize = `${SIZE_ERROR}px`;
   errorMessage.style.textAlign = 'center';
   errorMessage.style.padding = `${VERTICAL_PADDING}px ${HORIZONTAL_PADDING}px`;

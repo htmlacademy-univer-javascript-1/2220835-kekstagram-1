@@ -4,69 +4,66 @@ const MAX_MARVIN_VALUE = 100;
 const MAX_PHOBOS_VALUE = 3;
 const MAX_HEAT_VALUE = 3;
 const RELIX = 10;
-
-const Slider = {
-  MIN: 0,
-  MAX: 100,
-  STEP: 1,
-  CONNECT: 'lower'
-};
+const MIN_SLIDE_VALUE = 0;
+const MAX_SLIDE_VALUE = 100;
+const STEP_SLIDE = 1;
+const CONNECT_SLIDE = 'lower';
 
 const uploadingPicture = uploadingOverlay.querySelector('.img-upload__preview').querySelector('img');
-const sliderValue = uploadingOverlay.querySelector('.effect-level__value');
-const sliderItem = uploadingOverlay.querySelector('.effect-level__slider');
-const sliderField = uploadingOverlay.querySelector('.img-upload__effect-level');
+const effectLevelValue = uploadingOverlay.querySelector('.effect-level__value');
+const effectLevelSlider = uploadingOverlay.querySelector('.effect-level__slider');
+const imgUploadEffectLevel = uploadingOverlay.querySelector('.img-upload__effect-level');
 const effectsList = uploadingOverlay.querySelector('.effects__list');
 
 let currentEffect = '';
 
-noUiSlider.create(sliderItem, {
+noUiSlider.create(effectLevelSlider, {
   range: {
-    min: Slider.MIN,
-    max: Slider.MAX
+    min: MIN_SLIDE_VALUE,
+    max: MAX_SLIDE_VALUE
   },
-  start: Slider.MAX,
-  step: Slider.STEP,
-  connect: Slider.CONNECT
+  start: MAX_SLIDE_VALUE,
+  step: STEP_SLIDE,
+  connect: CONNECT_SLIDE
 });
 
-const getEffectStep = (effectMaxValue) => effectMaxValue / Slider.MAX;
+const getEffectStep = (effectMaxValue) => effectMaxValue / MAX_SLIDE_VALUE;
 
 const effects = {
   none: () => {
-    sliderField.classList.add('hidden');
+    imgUploadEffectLevel.classList.add('hidden');
     return 'none';
   },
 
   chrome: () => {
-    sliderField.classList.remove('hidden');
-    return `grayscale(${parseInt(sliderValue.value, RELIX) * getEffectStep(1)})`;
+    imgUploadEffectLevel.classList.remove('hidden');
+    return `grayscale(${parseInt(effectLevelValue.value, RELIX) * getEffectStep(1)})`;
   },
 
   sepia: () => {
-    sliderField.classList.remove('hidden');
-    return `sepia(${parseInt(sliderValue.value, RELIX) * getEffectStep(1)})`;
+    imgUploadEffectLevel.classList.remove('hidden');
+    return `sepia(${parseInt(effectLevelValue.value, RELIX) * getEffectStep(1)})`;
   },
 
   marvin: () => {
-    sliderField.classList.remove('hidden');
-    return `invert(${parseInt(sliderValue.value, RELIX) * getEffectStep(MAX_MARVIN_VALUE)}%)`;
+    imgUploadEffectLevel.classList.remove('hidden');
+    return `invert(${parseInt(effectLevelValue.value, RELIX) * getEffectStep(MAX_MARVIN_VALUE)}%)`;
   },
 
   phobos: () => {
-    sliderField.classList.remove('hidden');
-    return `blur(${parseInt(sliderValue.value, RELIX) * getEffectStep(MAX_PHOBOS_VALUE)}px)`;
+    imgUploadEffectLevel.classList.remove('hidden');
+    return `blur(${parseInt(effectLevelValue.value, RELIX) * getEffectStep(MAX_PHOBOS_VALUE)}px)`;
   },
 
   heat: () => {
-    sliderField.classList.remove('hidden');
-    const effectMin = Slider.MAX / (MAX_HEAT_VALUE - 1);
-    return `brightness(${(effectMin + parseInt(sliderValue.value, RELIX)) * getEffectStep(MAX_HEAT_VALUE - 1)})`;
+    imgUploadEffectLevel.classList.remove('hidden');
+    const effectMin = MAX_SLIDE_VALUE / (MAX_HEAT_VALUE - 1);
+    return `brightness(${(effectMin + parseInt(effectLevelValue.value, RELIX)) * getEffectStep(MAX_HEAT_VALUE - 1)})`;
   }
 };
 
 const onSliderChange = () => {
-  sliderValue.value = sliderItem.noUiSlider.get();
+  effectLevelValue.value = effectLevelSlider.noUiSlider.get();
 
   uploadingPicture.style.filter = effects[currentEffect.replace('effects__preview--', '')]();
 };
@@ -83,8 +80,8 @@ const onEffectsClick = (evt) => {
       uploadingPicture.classList.remove(currentEffect);
     }
 
-    sliderItem.noUiSlider.set(Slider.MAX);
-    sliderValue.value = sliderItem.noUiSlider.get();
+    effectLevelSlider.noUiSlider.set(MAX_SLIDE_VALUE);
+    effectLevelValue.value = effectLevelSlider.noUiSlider.get();
 
     currentEffect = element.classList[1];
     uploadingPicture.classList.add(currentEffect);
@@ -100,7 +97,7 @@ const setEffects = () => {
   effectsList.children[0].querySelector('input').checked = true;
 };
 
-sliderItem.noUiSlider.on('change', onSliderChange);
+effectLevelSlider.noUiSlider.on('change', onSliderChange);
 effectsList.addEventListener('click', onEffectsClick);
 
 export{setEffects};

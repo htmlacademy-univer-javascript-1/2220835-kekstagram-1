@@ -1,6 +1,6 @@
 import { uploadHashtagInput, clearHashtagsField, checkFormValidation, imgUploadForm } from './validators.js';
 import { isEscapeKey } from './util.js';
-import { scalingPhotos, uploadingOverlay } from './scale-change.js';
+import { scalingImage, uploadingOverlay } from './scale-change.js';
 import { setEffects } from './effects.js';
 import { setData } from './api.js';
 import { addPostMessages, showSuccessMessage, closeMessage, showErrorMessage } from './listener.js';
@@ -47,7 +47,7 @@ const onUploadClick = () => {
   uploadingOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
 
-  scalingPhotos();
+  scalingImage();
   setEffects();
   uploadHashtagInput();
 };

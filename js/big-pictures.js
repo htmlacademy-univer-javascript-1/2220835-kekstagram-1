@@ -1,26 +1,23 @@
 import {isEscapeKey } from './util.js';
 import { setComments, bigPicture } from './comments.js';
 
-const closeButton = bigPicture.querySelector('#picture-cancel');
-
-const clearBigPictureMenu = () => {
-  bigPicture.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-};
+const pictureCancel = bigPicture.querySelector('#picture-cancel');
 
 const onEscapeKeyDown = (evt) => {
   if(isEscapeKey(evt)){
-    clearBigPictureMenu();
+    bigPicture.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
     document.removeEventListener('keydown', onEscapeKeyDown);
   }
 };
 
-closeButton.addEventListener('click', () => {
-  clearBigPictureMenu();
+pictureCancel.addEventListener('click', () => {
+  bigPicture.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onEscapeKeyDown);
 });
 
-const showBigPictures = (data) => {
+const openModal = (data) => {
   document.addEventListener('keydown', onEscapeKeyDown);
 
   bigPicture.classList.remove('hidden');
@@ -34,4 +31,4 @@ const showBigPictures = (data) => {
   document.querySelector('body').classList.add('modal-open');
 };
 
-export {showBigPictures};
+export {openModal};

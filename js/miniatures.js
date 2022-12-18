@@ -1,4 +1,4 @@
-import { showBigPictures } from './big-pictures.js';
+import { openModal } from './big-pictures.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
@@ -21,7 +21,7 @@ const createMiniature = (picture) => {
   newImage.addEventListener('click', (evt) => {
     evt.preventDefault();
 
-    showBigPictures(picture);
+    openModal(picture);
   });
 
   return newImage;
