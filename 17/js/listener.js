@@ -1,5 +1,5 @@
-import {isEscapeKey} from './util.js';
 import { closeForm, onEscapeKeyDown } from './form.js';
+import { isEscape } from './util.js';
 
 const MESSAGE_Z_POSITION = 100;
 
@@ -27,7 +27,7 @@ const closeErrorMessage = () => {
 };
 
 const onErrorEscapeDown = (evt) => {
-  if(isEscapeKey(evt)) {
+  if(isEscape(evt)) {
     document.removeEventListener('keydown', onErrorEscapeDown);
 
     closeErrorMessage();
@@ -42,7 +42,7 @@ const onErrorClick = (evt) => {
   }
 };
 
-const addMessage = (message) => {
+const appendMessage = (message) => {
   message.classList.add('hidden');
   message.style.zIndex = MESSAGE_Z_POSITION;
 
@@ -50,8 +50,8 @@ const addMessage = (message) => {
 };
 
 const addPostMessages = () => {
-  addMessage(successMessage);
-  addMessage(errorMessage);
+  appendMessage(successMessage);
+  appendMessage(errorMessage);
 };
 
 const showSuccessMessage = () => {

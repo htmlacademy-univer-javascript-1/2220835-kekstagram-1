@@ -1,6 +1,8 @@
-const IMAGE_SCALE_STEP = 25;
-const MIN_IMAGE_SCALE_VALUE = 25;
-const MAX_IMAGE_SCALE_VALUE = 100;
+const Scale = {
+  STEP: 25,
+  MAX: 100,
+  MIN: 25,
+};
 
 const uploadingOverlay = document.querySelector('.img-upload__overlay');
 const uploadingPicture = uploadingOverlay.querySelector('.img-upload__preview').querySelector('img');
@@ -8,13 +10,13 @@ const scale = uploadingOverlay.querySelector('.img-upload__scale');
 const scalerField = scale.querySelector('.scale__control--value');
 
 const changeScale = (scaleCoefficient) => {
-  let scaleNumber = Number(scalerField.value.replace('%', '')) + scaleCoefficient * IMAGE_SCALE_STEP;
+  let scaleNumber = Number(scalerField.value.replace('%', '')) + scaleCoefficient * Scale.STEP;
 
-  if(scaleNumber < MIN_IMAGE_SCALE_VALUE) {
-    scaleNumber = MIN_IMAGE_SCALE_VALUE;
+  if(scaleNumber < Scale.MIN) {
+    scaleNumber = Scale.MIN;
   }
-  else if (scaleNumber > MAX_IMAGE_SCALE_VALUE) {
-    scaleNumber = MAX_IMAGE_SCALE_VALUE;
+  else if (scaleNumber > Scale.MAX) {
+    scaleNumber = Scale.MAX;
   }
 
   scalerField.value = `${scaleNumber}%`;
@@ -33,8 +35,8 @@ const onScaleButtonClick = (evt) => {
 };
 
 const scalingPhotos = () => {
-  scalerField.value = `${MAX_IMAGE_SCALE_VALUE}%`;
-  uploadingPicture.style.transform = `scale(${MAX_IMAGE_SCALE_VALUE / 100})`;
+  scalerField.value = `${Scale.MAX}%`;
+  uploadingPicture.style.transform = `scale(${Scale.MAX / 100})`;
 };
 
 scale.addEventListener('click', onScaleButtonClick);

@@ -1,25 +1,26 @@
-import {debounce, shuffleArray} from './util.js';
-import {createMiniatures, removePhotos } from './miniatures.js';
+import { debounce, shuffle } from './util.js';
+import { renderPhotos, removePhotos } from './miniatures.js';
 import { pictures } from './data.js';
 
-const MAX_RANDOM_FILTER_LENGTH = 10;
+const MAX_FILTER_LENGTH = 10;
 
-const imgFilters = document.querySelector('.img-filters');
-const imgFiltersForm = document.querySelector('.img-filters__form');
+const imgFilterForm = document.querySelector('.img-filters__form');
+
+const showFilters = () => {
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+};
+
+const sortByCommentsCount = (firstItem, secondItem) => secondItem.comments.length - firstItem.comments.length;
 
 const filters = {
   'filter-default': () => pictures.slice(),
-  'filter-random': () => shuffleArray(pictures.slice()).slice(0, MAX_RANDOM_FILTER_LENGTH),
-  'filter-discussed': () => pictures.slice().sort((a, b) => b.comments.length - a.comments.length)
+  'filter-random': () => shuffle(pictures.slice()).slice(0, MAX_FILTER_LENGTH),
+  'filter-discussed': () => pictures.slice().sort(sortByCommentsCount),
 };
 
-const showFilters = () => {
-  imgFilters.classList.remove('img-filters--inactive');
-};
-
-const setFilter =  debounce((evt) => {
+const onFilterClick = debounce((evt) => {
   if(evt.target.tagName === 'BUTTON') {
-    const clickedButton = imgFiltersForm.querySelector('.img-filters__button--active');
+    const clickedButton = imgFilterForm.querySelector('.img-filters__button--active');
 
     if(clickedButton) {
       clickedButton.classList.remove('img-filters__button--active');
@@ -27,8 +28,10 @@ const setFilter =  debounce((evt) => {
     evt.target.classList.add('img-filters__button--active');
 
     removePhotos();
-    createMiniatures(filters[evt.target.id]());
+    renderPhotos(filters[evt.target.id]());
   }
 });
 
-export {showFilters, setFilter};
+imgFilterForm.addEventListener('click', onFilterClick);
+
+export{showFilters};

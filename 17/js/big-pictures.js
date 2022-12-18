@@ -1,34 +1,37 @@
-import {isEscapeKey} from './util.js';
+import { isEscape } from './util.js';
 import { setComments, bigPicture } from './comments.js';
 
-const bigPictureCancel = bigPicture.querySelector('#picture-cancel');
+const closeButton = bigPicture.querySelector('#picture-cancel');
+
+const clearBigPictureMenu = () => {
+  bigPicture.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+};
 
 const onEscapeKeyDown = (evt) => {
-  if(isEscapeKey(evt)){
-    bigPicture.classList.add('hidden');
-    document.body.classList.remove('modal-open');
+  if(isEscape(evt)){
+    clearBigPictureMenu();
     document.removeEventListener('keydown', onEscapeKeyDown);
   }
 };
 
-bigPictureCancel.addEventListener('click', () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+closeButton.addEventListener('click', () => {
+  clearBigPictureMenu();
   document.removeEventListener('keydown', onEscapeKeyDown);
-}
-);
+});
 
-const openModal = (image) => {
+const showBigPictures = (data) => {
   document.addEventListener('keydown', onEscapeKeyDown);
+
   bigPicture.classList.remove('hidden');
 
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = image.url;
-  bigPicture.querySelector('.likes-count').textContent = image.likes;
-  bigPicture.querySelector('.social__caption').textContent = image.description;
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src = data.url;
+  bigPicture.querySelector('.likes-count').textContent = data.likes;
+  bigPicture.querySelector('.social__caption').textContent = data.description;
 
-  setComments(image.comments);
+  setComments(data.comments);
 
-  document.body.classList.add('modal-open');
+  document.querySelector('body').classList.add('modal-open');
 };
 
-export {openModal};
+export {showBigPictures};

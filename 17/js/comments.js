@@ -8,7 +8,7 @@ const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const socialComments = bigPicture.querySelector('.social__comments');
 const commentChild = socialComments.children[0];
 
-let countCommentGrous = 1;
+let maxCommentsMultiplyer = 1;
 
 const getCommentItem = (comment) => {
   const newComment = commentChild.cloneNode(true);
@@ -25,7 +25,7 @@ const getCommentItem = (comment) => {
 };
 
 const addNewComments = () => {
-  const newCommentsCount = MAX_NEW_COMMENTS_COUNT * countCommentGrous;
+  const newCommentsCount = MAX_NEW_COMMENTS_COUNT * maxCommentsMultiplyer;
   const commentsOverallCount = socialComments.children.length;
   const addedCommentsCount = newCommentsCount >= commentsOverallCount ? commentsOverallCount : newCommentsCount;
 
@@ -51,12 +51,12 @@ const setComments = (comments) => {
   comments.forEach((comment) => {
     socialComments.appendChild(getCommentItem(comment));
   });
-  countCommentGrous = 1;
+  maxCommentsMultiplyer = 1;
   addNewComments();
 };
 
 commentsLoader.addEventListener('click', () => {
-  addNewComments(countCommentGrous++);
+  addNewComments(maxCommentsMultiplyer++);
 });
 
 export { setComments, bigPicture };
